@@ -3,40 +3,40 @@ var _function_ = 'function',
     _object_ = 'object';
 
 var factory = function(obj){
-	var base = {}, sub = {};
+    var base = sub = {};
 
-	if (typeof obj.extends === _function_) {
-		try {
+    if (typeof obj.extends === _function_) {
+        try {
             base = new obj.extends();
         } catch(e) {}
-	} else if (typeof obj.extends === _object_) {
-		base = obj.extends;
+    } else if (typeof obj.extends === _object_) {
+        base = obj.extends;
     }
 
-	if (typeof obj.instance === _function_) {
-		try {
+    if (typeof obj.instance === _function_) {
+        try {
             sub = new obj.instance();
         } catch(e) {}
 
     } else if (typeof obj.instance === _object_) {
-		sub = obj.instance;
+        sub = obj.instance;
     }
 
-	for (var i in base) {
-		if (base.hasOwnProperty(i)) {
-			if (!sub[i]) {
+    for (var i in base) {
+        if (base.hasOwnProperty(i)) {
+            if (!sub[i]) {
                 sub[i] = base[i];
             }
         }
     }
 
-	if (typeof sub.constructor === _function_) {
-		try{
+    if (typeof sub.constructor === _function_) {
+        try{
             sub.constructor();
         }catch(e){}
     }
 
-	return sub;
+    return sub;
 };
 
 var declare = function() {
