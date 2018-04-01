@@ -1,0 +1,26 @@
+{
+  "name": "video-metrix",
+  "version": "1.0.0",
+  "description": "video analytics",
+  "main": "src/main/js/index.js",
+  "scripts": {
+    "uglify": "uglifyjs --compress --mangle --output build/bundle.min.js -- build/bundle.js",
+    "package": "node script.build.js && npm run uglify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgr-myrg/video-metrix-js.git"
+  },
+  "author": "Roger Paul Mayorga <solidity@gmx.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rgr-myrg/video-metrix-js/issues"
+  },
+  "homepage": "https://github.com/rgr-myrg/video-metrix-js#readme",
+  "devDependencies": {
+    "concat": "^1.0.3",
+    "uglify-js": "^3.3.17",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13"
+  }
+}

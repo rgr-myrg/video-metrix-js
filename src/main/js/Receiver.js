@@ -1,0 +1,3 @@
+declare().as('Receiver').module(
+
+);
