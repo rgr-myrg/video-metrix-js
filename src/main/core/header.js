@@ -1,14 +1,63 @@
 (function(m) {
+var _function_ = 'function',
+    _object_ = 'object';
+
+var factory = function(obj){
+	var base = {}, sub = {};
+
+	if (typeof obj.extends === _function_) {
+		try {
+            base = new obj.extends();
+        } catch(e) {}
+	} else if (typeof obj.extends === _object_) {
+		base = obj.extends;
+    }
+
+	if (typeof obj.instance === _function_) {
+		try {
+            sub = new obj.instance();
+        } catch(e) {}
+
+    } else if (typeof obj.instance === _object_) {
+		sub = obj.instance;
+    }
+
+	for (var i in base) {
+		if (base.hasOwnProperty(i)) {
+			if (!sub[i]) {
+                sub[i] = base[i];
+            }
+        }
+    }
+
+	if (typeof sub.constructor === _function_) {
+		try{
+            sub.constructor();
+        }catch(e){}
+    }
+
+	return sub;
+};
+
 var declare = function() {
-    var name;
+    var name = base = null;
 
     return {
         as: function(modName) {
             name = modName;
             return this;
         },
-        module: function(fn) {
-            m[name] = fn;
+        extends: function(baseClass) {
+            base = baseClass;
+            return this;
+        },
+        module: function(mod) {
+            m[name] = (base !== null)
+                ? factory({
+                    extends: base,
+                    instance: mod
+                })
+                : mod;
         }
     };
 };
