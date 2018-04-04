@@ -1,23 +1,20 @@
-(function(m) {
+(function(_top_) {
+/* String constants */
 var _function_ = 'function',
-    _object_ = 'object';
+    _object_   = 'object',
+    _messsage_ = 'message';
 
 var factory = function(obj){
     var base = sub = {};
 
     if (typeof obj.extends === _function_) {
-        try {
-            base = new obj.extends();
-        } catch(e) {}
+        base = new obj.extends();
     } else if (typeof obj.extends === _object_) {
         base = obj.extends;
     }
 
     if (typeof obj.instance === _function_) {
-        try {
-            sub = new obj.instance();
-        } catch(e) {}
-
+        sub = new obj.instance();
     } else if (typeof obj.instance === _object_) {
         sub = obj.instance;
     }
@@ -31,9 +28,7 @@ var factory = function(obj){
     }
 
     if (typeof sub.constructor === _function_) {
-        try{
-            sub.constructor();
-        }catch(e){}
+        sub.constructor();
     }
 
     return sub;
@@ -52,7 +47,7 @@ var declare = function() {
             return this;
         },
         module: function(mod) {
-            m[name] = (base !== null)
+            _top_[name] = (base !== null)
                 ? factory({
                     extends: base,
                     instance: mod
@@ -63,7 +58,7 @@ var declare = function() {
 };
 
 var use = function(name) {
-    return m[name];
+    return _top_[name];
 };
 
 var debug = true;

@@ -1,5 +1,6 @@
 var Notifier = use('Notifier');
 var Event = use('Event');
+var XhrWorker = use('XhrWorker');
 
 var notifier = new Notifier();
 notifier.add({
@@ -35,4 +36,14 @@ declare().as('noti').extends(Notifier).module({
     onPlayStart: function(e) {
         console.log('[extended]', e);
     }
+});
+
+var worker = XhrWorker.getWorkerInstance();
+
+worker.addEventListener(_messsage_, function(message) {
+    console.log('response', message.data);
+});
+worker.postMessage({
+    uri: 'xhr:load',
+    url: 'https://jsonplaceholder.typicode.com/posts/1'
 });
