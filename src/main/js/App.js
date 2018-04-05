@@ -13,10 +13,13 @@ var Loader   = use('ScriptLoader');
 //     }
 // });
 
-declare().as('App').module((function() {
+declare().as('mTrx').module((function() {
     var notifier = new Notifier();
 
     return {
+        constructor: function() {
+            log('[App] init');
+        },
         scripts: function(list) {
             Loader.loadScripts(list).then(function(result) {
                 log('[App]', result);
@@ -32,9 +35,10 @@ declare().as('App').module((function() {
             return this;
         }
     };
-})());
+})()).export();
 
-window.mTrx = use('App');
+//window.mTrx = use('App');
+
 mTrx.scripts([
     'http://rgr-myrg.github.io/www/sandbox/build/lib/tracking/mux.js',
     'http://rgr-myrg.github.io/www/sandbox/build/lib/tracking/conviva-uvpjs-sdk.min.js',

@@ -27,9 +27,9 @@ var factory = function(obj){
         }
     }
 
-    if (typeof sub.constructor === _function_) {
-        sub.constructor();
-    }
+    // if (typeof sub.constructor === _function_) {
+    //     sub.constructor();
+    // }
 
     return sub;
 };
@@ -47,12 +47,27 @@ var declare = function() {
             return this;
         },
         module: function(mod) {
+            if (!mod) return;
+
             _top_[name] = (base !== null)
                 ? factory({
                     extends: base,
                     instance: mod
                 })
                 : mod;
+
+            if (typeof _top_[name].constructor === _function_) {
+                _top_[name].constructor();
+            }
+
+            return this;
+        },
+        export: function() {
+            if (window[name]) {
+                return;
+            }
+
+            window[name] = _top_[name];
         }
     };
 };
