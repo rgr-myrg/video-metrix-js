@@ -1,8 +1,5 @@
 declare().as('ScriptLoader').module((function() {
     var scriptElement = null,
-        scriptSrc     = null,
-        scriptType    = 'text/javascript',
-        scriptAsync   = true,
         scriptOnReady = Function.prototype;
 
     var xhrWorker = use('XhrWorker').getWorkerInstance(),
@@ -11,6 +8,14 @@ declare().as('ScriptLoader').module((function() {
 
     var bulkLoad = function(scripts) {
         var onWorkerResponse = function(response) {
+            /* DOM inject scripts */
+            var script = document.createElement('script');
+
+            script.type = 'text/javascript';
+            script.text = response.data;
+
+            document.querySelector('head').appendChild(script);
+
             if (scripts.length === 0) {
                 callback(response);
             } else {
@@ -26,7 +31,6 @@ declare().as('ScriptLoader').module((function() {
         }.bind(this);
 
         xhrWorker.addEventListener(_messsage_, function(message) {
-            console.log('response', message.data);
             onWorkerResponse(message.data);
         });
 

@@ -4,20 +4,13 @@ var _function_ = 'function',
     _object_   = 'object',
     _messsage_ = 'message';
 
-var factory = function(obj){
-    var base = sub = {};
+var instantiate = function(poly) {
+    return typeof poly === _function_ ? new poly() : poly;
+};
 
-    if (typeof obj.extends === _function_) {
-        base = new obj.extends();
-    } else if (typeof obj.extends === _object_) {
-        base = obj.extends;
-    }
-
-    if (typeof obj.instance === _function_) {
-        sub = new obj.instance();
-    } else if (typeof obj.instance === _object_) {
-        sub = obj.instance;
-    }
+var factory = function(superClass, subClass) {
+    var base = instantiate(superClass),
+        sub  = instantiate(subClass);
 
     for (var i in base) {
         if (base.hasOwnProperty(i)) {
@@ -27,34 +20,29 @@ var factory = function(obj){
         }
     }
 
-    // if (typeof sub.constructor === _function_) {
-    //     sub.constructor();
-    // }
-
     return sub;
 };
 
 var declare = function() {
-    var name = base = null;
+    var name = superClass = null;
 
     return {
-        as: function(modName) {
-            name = modName;
+        as: function(_name_) {
+            name = _name_;
             return this;
         },
-        extends: function(baseClass) {
-            base = baseClass;
-            return this;
-        },
-        module: function(mod) {
-            if (!mod) return;
 
-            _top_[name] = (base !== null)
-                ? factory({
-                    extends: base,
-                    instance: mod
-                })
-                : mod;
+        extends: function(_super_) {
+            superClass = _super_;
+            return this;
+        },
+
+        module: function(_this_) {
+            if (!_this_) return;
+
+            _top_[name] = (superClass !== null)
+                        ? factory(superClass, _this_)
+                        : _this_;
 
             if (typeof _top_[name].constructor === _function_) {
                 _top_[name].constructor();
@@ -62,6 +50,7 @@ var declare = function() {
 
             return this;
         },
+
         export: function() {
             if (window[name]) {
                 return;
